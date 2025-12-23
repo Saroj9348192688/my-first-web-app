@@ -1,0 +1,44 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body{
+  background-image: url("IMAGES/LOGING SCREEN.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: Arial, Times New Roman , sans-serif;
+}
+
+.login-box{
+  width: 450px;
+  margin: 100px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  text-align: left;
+}
+
+input{
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+
+}
+
+button{
+  width: 95%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+}
+
+.message{
+margin-top: 10px;
+font-weight: bold;
+text-align: center;
+}
