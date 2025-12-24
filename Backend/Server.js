@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const express = require("express");
 const cors = require("cors");  //connect 2 different origin ie.fontend to server
 require("./db");  //connect DB
@@ -29,16 +30,38 @@ app.post("/register", async (req, res) => {
 
 // Login API (Database based)
 app.post("/login", async (req, res) => {
-  const { usename, password } = req.body;
+  const { username, password } = req.body;   // ✅ DEFINE VARIABLES
 
-  const user = await User.findOne({ username, password });
+  if (!username || !password) {
+    return res.json({
+      success: false,
+      message: "Username and password required"
+    });
+  }
 
-  if (user) {
-    res.json({ success: true, message: "Login Successful" });
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    return res.json({
+      success: false,
+      message: "Invalid credentials"
+    });
   }
-  else{
-    res.json({ success: false, message: "Invalid credentials"});
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    return res.json({
+      success: false,
+      message: "Invalid credentials"
+    });
   }
+
+  res.json({
+    success: true,
+    role: user.role,
+    message: "Login successful"
+  });
 });
 
 app.listen(PORT, () => {
@@ -56,9 +79,10 @@ app.post("/setup-admin", async (req, res) => {
     });
   }
 
+  const hashedPassword = await bcrypt.hash("1234", 10);
   const admin = new User({
     username: "admin",
-    password: "1234",
+    password: hashedPassword,
     role: "admin"
   });
 
